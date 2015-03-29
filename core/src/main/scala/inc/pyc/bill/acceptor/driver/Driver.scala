@@ -62,6 +62,9 @@ private[acceptor] trait Driver {
 
     case Event(CommandFailed(cmd, reason), _) =>
       throw new CommandFailedException(reason)
+      
+    case Event(Shutdown, _) =>
+      stop(FSM.Failure("Terminated driver while disconnected"))
 
     case Event(Opened(port), _) =>
       log debug ("Port {} is now open", port)
